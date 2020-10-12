@@ -8,14 +8,14 @@ import 'package:flutter_ari/model/product.dart';
 import '../authentication_service.dart';
 import 'package:provider/provider.dart';
 
-class ListViewProduct extends StatefulWidget {
+class ListViewProduct_user extends StatefulWidget {
   @override
-  _ListViewProductState createState() => _ListViewProductState();
+  _ListViewProduct_userState createState() => _ListViewProduct_userState();
 }
 
 final productReference = FirebaseDatabase.instance.reference().child('product');
 
-class _ListViewProductState extends State<ListViewProduct> {
+class _ListViewProduct_userState extends State<ListViewProduct_user> {
   List<Product> items;
   StreamSubscription<Event> _onProductAddedSubscription;
   StreamSubscription<Event> _onProductChangedSubscription;
@@ -99,34 +99,14 @@ class _ListViewProductState extends State<ListViewProduct> {
                               onTap: () =>
                                   _navigateToProduct(context, items[position])),
                         ),
-                        IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            onPressed: () => _deleteProduct(
-                                context, items[position], position)),
-                        IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.greenAccent,
-                            ),
-                            onPressed: () => _navigateToProductInformation(
-                                context, items[position])),
+
                       ],
                     ),
                   ],
                 );
               }),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          backgroundColor: Colors.deepOrangeAccent,
-          onPressed: () => _createNewProduct(context),
-        ),
+
       ),
     );
   }
@@ -139,29 +119,15 @@ class _ListViewProductState extends State<ListViewProduct> {
 
   void _onProductUpdate(Event event) {
     var oldProductValue =
-        items.singleWhere((product) => product.id == event.snapshot.key);
+    items.singleWhere((product) => product.id == event.snapshot.key);
     setState(() {
       items[items.indexOf(oldProductValue)] =
-          new Product.fromSnapShop(event.snapshot);
+      new Product.fromSnapShop(event.snapshot);
     });
   }
 
-  void _deleteProduct(
-      BuildContext context, Product product, int position) async {
-    await productReference.child(product.id).remove().then((_) {
-      setState(() {
-        items.removeAt(position);
-      });
-    });
-  }
 
-  void _navigateToProductInformation(
-      BuildContext context, Product product) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProductScreen(product)),
-    );
-  }
+
 
   void _navigateToProduct(BuildContext context, Product product) async {
     await Navigator.push(
@@ -170,11 +136,5 @@ class _ListViewProductState extends State<ListViewProduct> {
     );
   }
 
-  void _createNewProduct(BuildContext context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ProductScreen(Product(null, '', '', '', ''))),
-    );
-  }
+
 }
