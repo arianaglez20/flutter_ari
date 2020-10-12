@@ -100,7 +100,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     });
                   }
                   },
-                    child: (widget.product.id != null) ? Text('Update') : Text('Add')),
+                    child: (widget.product.id != null) ? Text('Actualizar') : Text('Agregar')),
               ],
             ),
           ),
